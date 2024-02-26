@@ -24,8 +24,8 @@ class StockResource(View):
         '''
         stock_code = request.GET.get('stock_code')
 
+        print(f'The stock code is {stock_code}')
+
         stock_dto = self.stock_controller.get_stock_information(stock_code=stock_code) 
 
-        stock_json = json.dumps(stock_dto)
-
-        return JsonResponse(stock_json)
+        return JsonResponse(stock_dto.__dict__)
