@@ -43,7 +43,7 @@ pip install -r requirements.txt requirements-dev.txt
 **4 - Run the app:**
 
 ```
-python3 run main.py
+python3 manage.py runserver
 ```
 
 ## Make your mark :triangular_flag_on_post:   
