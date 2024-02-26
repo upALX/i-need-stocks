@@ -6,8 +6,8 @@ from stocks.models import Stock
 # Create your views here.
 class StockResource:
 
-    # def __init__(self) -> None:
-    #     self.stock_controller = StockController()
+    def __init__(self) -> None:
+        self.stock_controller = StockController()
 
     
     def health_check_resource(self, request: HttpRequest):
