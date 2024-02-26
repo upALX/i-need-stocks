@@ -1,4 +1,4 @@
-from django.http import HttpRequest, HttpResponse
+from django.http import JsonResponse, HttpRequest, HttpResponse
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -38,4 +38,4 @@ class WebhookResource(View):
             request_body=body_from_request
         )
 
-        return HttpResponse(webhook_dto.__dict__)
+        return JsonResponse(webhook_dto.__dict__)

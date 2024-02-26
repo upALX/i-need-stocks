@@ -24,4 +24,6 @@ class WebhookController:
             creation_date=webhook_model.created_at,
         )
 
+        print(f'The webhook dto created is {webhook_dto.__dict__}')
+
         return webhook_dto
