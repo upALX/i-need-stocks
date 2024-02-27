@@ -3,9 +3,12 @@ from werkzeug.exceptions import BadRequest
 from .dto.stock_dto import StockDTO
 from .repository import StockRepository
 from webhooks.controller import WebhookController
-from .constants import MAX_RETRY, API_KEY_V1, API_KEY_V2
+from .constants import MAX_RETRY, API_KEY_V1
 
 class StockController:
+    '''
+        Here is all algorithm logic about stocks
+    '''
 
     def __init__(self) -> None:
         self.headers = {'Content-Type': 'application/json'}
@@ -24,7 +27,10 @@ class StockController:
         try:
             while True:
                 print(f'The counter requests is {counter}')
-                stock_data = requests.get(headers=self.headers, url=base_url)
+                stock_data = requests.get(
+                    headers=self.headers,
+                    url=base_url, 
+                )
 
                 json_data_response = stock_data.json()
 
@@ -38,7 +44,6 @@ class StockController:
                     )
 
                     if webhook_model is not None:
-                        print('ON SENT WEBHOOK')
                         self.webhook_controller.sent_webhook(
                             stock_code=stock_code,
                             stock_key=stock_model.stock_key,
@@ -46,13 +51,10 @@ class StockController:
                             stock_data=json_data_response
                         )
 
-                        print('WEBHOOK SENT!')
-
                     break
 
                 if counter == MAX_RETRY:
                     raise BadRequest('Max retry to get all information stock was exceeded.')
-
                 
                 counter += 1
 

@@ -8,6 +8,9 @@ from .controller import StockController
 
 @method_decorator(require_http_methods(["GET"]), name='dispatch')
 class StockResource(View):
+    '''
+        All requests and responses of API
+    '''
 
     def __init__(self) -> None:
         self.stock_controller = StockController()

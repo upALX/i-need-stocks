@@ -17,14 +17,8 @@ class WebhookResource(View):
 
     @csrf_exempt
     def health_check_resource(self, request: HttpRequest):
-        '''
-            verify if the webhook module is running...
-        '''
-
-        # response_check = self.stock_controller.health_check()
 
         return HttpResponse()
-
 
     def post_create_webhooks(self, request: HttpRequest) -> None:
         '''

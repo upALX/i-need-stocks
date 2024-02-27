@@ -2,7 +2,7 @@ from .models import Stock
 
 class StockRepository:
     '''
-        access database using repository pattern
+        All access to the stock table using repository pattern and django ORM
     '''
     
     def get_stock_by_key(self, stock_key: str) -> Stock:

@@ -6,11 +6,17 @@ from .models import Webhook
 from .repository import WebhookRepository
 
 class WebhookController:
+    '''
+        All Webhook algorithm logics 
+    '''
 
     def __init__(self) -> None:
-        self.webhook_repository = WebhookRepository
+        self.webhook_repository = WebhookRepository()
 
-    def create_webhook(self, request_body: dict) -> WebhookDTO:
+    def create_webhook(
+        self, 
+        request_body: dict
+    ) -> WebhookDTO:
         
         stock_code = request_body.get('stock_code').upper()
         webhook_url = request_body.get('webhook_url').lower()
@@ -18,7 +24,6 @@ class WebhookController:
         print(f'Request body received on CONTROLLER {request_body}')
 
         webhook_model = self.webhook_repository.create_webhook_model(
-            self,
             webhook_url=webhook_url,
             stock_code=stock_code
         )
@@ -32,10 +37,12 @@ class WebhookController:
 
         return webhook_dto
 
-    def get_webhook_by_stock_code(self, stock_code: str) -> Webhook:
+    def get_webhook_by_stock_code(
+        self,
+        stock_code: str
+    ) -> Webhook:
 
         webhook_model = self.webhook_repository.get_webhook_by_stock_code(
-            self,
             stock_code=stock_code,
         )
 
@@ -60,7 +67,6 @@ class WebhookController:
             
             print(f'The JSON data to send is {json_data}')
 
-
             response = requests.post(
                 url=webhook_url,
                 json=json_data,
@@ -78,3 +84,4 @@ class WebhookController:
             return Exception(str(ex))
         
         return
+    
