@@ -15,3 +15,12 @@ class WebhookRepository:
 
         return new_webhook_model
    
+    def get_webhook_by_stock_code(self, stock_code: str) -> Webhook:
+
+        webhook_model = Webhook.objects.get(
+            stock_ticker_code=stock_code
+        )
+
+        print(f'On webhook repository the webhook model finded with the stock code {stock_code} is {webhook_model}')
+
+        return webhook_model
