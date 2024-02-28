@@ -33,13 +33,18 @@ git clone git@github.com:upALX/i-need-stocks.git
 virtualenv .venv --python=python3.12
 ```
 
-**3 - Install all dependencies:**
+**3 - Access the virtual env (using linux as exemple)**
+```
+source .venv/bin/activate
+```
+
+**4 - Install all dependencies:**
 
 ```
-pip install -r requirements.txt requirements-dev.txt
+pip install -r requirements.txt 
 ```
 
-**4 - Run the app:**
+**5 - Run the app:**
 
 ```
 python3 manage.py runserver
