@@ -20,11 +20,6 @@ class WebhookController:
         webhook_url: str,
     ) -> WebhookDTO:
         
-        # stock_code = request_body.get('stock_code').upper()
-        # webhook_url = request_body.get('webhook_url').lower()
-
-        # print(f'Request body received on CONTROLLER {request_body}')
-
         webhook_model = self.webhook_repository.create_webhook_model(
             webhook_url=webhook_url,
             stock_code=stock_code

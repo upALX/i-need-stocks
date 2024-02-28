@@ -1,4 +1,5 @@
 from .models import Webhook
+from django.core.exceptions import ObjectDoesNotExist
 
 class WebhookRepository:
     '''
@@ -25,10 +26,14 @@ class WebhookRepository:
         stock_code: str
     ) -> Webhook:
 
-        webhook_model = Webhook.objects.get(
-            stock_ticker_code=stock_code
-        )
+        try:
+            webhook_model = Webhook.objects.get(
+                stock_ticker_code=stock_code
+            )
 
-        print(f'On webhook repository the webhook model found with the stock code {stock_code} is {webhook_model}')
+            print(f'On webhook repository the webhook model found with the stock code {stock_code} is {webhook_model}')
 
+        except ObjectDoesNotExist:
+            webhook_model = None
+        
         return webhook_model
