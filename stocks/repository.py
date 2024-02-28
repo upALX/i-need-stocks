@@ -2,14 +2,14 @@ from .models import Stock
 
 class StockRepository:
     '''
-        access database using repository pattern
+        All access to the stock table using repository pattern and django ORM
     '''
     
     def get_stock_by_key(self, stock_key: str) -> Stock:
         stock_model = Stock.objects.get(stock_key=stock_key)
         return stock_model
 
-    def save_stock_information(self, stock_code: str, stock_data: dict or any):
+    def save_stock_information(self, stock_code: str, stock_data: dict):
 
         print(f'Is on save stock information with stock data {stock_data}')
 

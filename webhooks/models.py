@@ -1,7 +1,5 @@
-from django.db import models
 import uuid
-
-# Create your models here.
+from django.db import models
 
 class Webhook(models.Model):
     id = models.AutoField(primary_key=True, null=False)

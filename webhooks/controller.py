@@ -1,41 +1,75 @@
 import requests
-from django.http import HttpResponseBadRequest
 from requests.exceptions import HTTPError
+from django.core.exceptions import BadRequest
+from constants import HEADERS, TIMEOUT
 from .dto.webhook_dto import WebhookDTO
 from .models import Webhook
 from .repository import WebhookRepository
 
 class WebhookController:
+    '''
+        All Webhook algorithm logics 
+    '''
 
     def __init__(self) -> None:
-        self.webhook_repository = WebhookRepository
+        self.webhook_repository = WebhookRepository()
 
-    def create_webhook(self, request_body: dict) -> WebhookDTO:
+    def create_webhook(
+        self,
+        stock_code: str,
+        webhook_url: str,
+    ) -> WebhookDTO:
         
-        stock_code = request_body.get('stock_code').upper()
-        webhook_url = request_body.get('webhook_url').lower()
+        try:
 
-        print(f'Request body received on CONTROLLER {request_body}')
+            webhook_already_exists = self.get_webhook_by_all(
+                stock_code=stock_code,
+                webhook_url=webhook_url
+            )
 
-        webhook_model = self.webhook_repository.create_webhook_model(
-            self,
-            webhook_url=webhook_url,
-            stock_code=stock_code
-        )
+            print(f'The webhook model already exists: {webhook_already_exists}')
 
-        webhook_dto = WebhookDTO(
-            webhook_key=webhook_model.webhook_key,
-            creation_date=webhook_model.created_at,
-        )
+            if webhook_already_exists is not None:
+                raise BadRequest(f'Already exists an webhook register with the stock {stock_code} and url {webhook_url}')
+        
+            webhook_model = self.webhook_repository.create_webhook_model(
+                webhook_url=webhook_url,
+                stock_code=stock_code
+            )
 
+            webhook_dto = WebhookDTO(
+                webhook_key=webhook_model.webhook_key,
+                creation_date=webhook_model.created_at,
+            )
+
+        except Exception as ex:
+            raise ex from None
         # print(f'The webhook dto created is {webhook_dto.__dict__}')
 
         return webhook_dto
+    
+    def get_webhook_by_all(
+        self,
+        stock_code: str,
+        webhook_url: str
+    ) -> Webhook:
+        print('Trying get the webhook')
 
-    def get_webhook_by_stock_code(self, stock_code: str) -> Webhook:
+        webhook_model = self.webhook_repository.get_webhook_by_all(
+            stock_code=stock_code,
+            webhook_url=webhook_url
+        )
+
+        print(f'The webhook getted on Webhook module is {webhook_model}')
+
+        return webhook_model
+    
+    def get_webhook_by_stock_code(
+        self,
+        stock_code: str
+    ) -> Webhook:
 
         webhook_model = self.webhook_repository.get_webhook_by_stock_code(
-            self,
             stock_code=stock_code,
         )
 
@@ -60,21 +94,21 @@ class WebhookController:
             
             print(f'The JSON data to send is {json_data}')
 
-
             response = requests.post(
                 url=webhook_url,
+                headers=HEADERS,
                 json=json_data,
-                timeout=7
+                timeout=TIMEOUT
             )
 
-            print(f'The response of sent webhook has the status {response.json()}')
+            print(f'The response of sent webhook has the status {response.content}')
 
             if response.status_code > 300:
-                print('IS ON RAISE ERROR')
                 raise HTTPError("On try sent the webhook occurs an error")
         except HTTPError as ex:
-            return HttpResponseBadRequest("Bad request: " + str(ex))
+            raise ex from None
         except Exception as ex:
-            return Exception(str(ex))
+            raise ex from None
         
         return
+    
