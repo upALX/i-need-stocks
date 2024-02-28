@@ -20,16 +20,20 @@ class WebhookController:
         webhook_url: str,
     ) -> WebhookDTO:
         
-        webhook_model = self.webhook_repository.create_webhook_model(
-            webhook_url=webhook_url,
-            stock_code=stock_code
-        )
+        try:
+        
+            webhook_model = self.webhook_repository.create_webhook_model(
+                webhook_url=webhook_url,
+                stock_code=stock_code
+            )
 
-        webhook_dto = WebhookDTO(
-            webhook_key=webhook_model.webhook_key,
-            creation_date=webhook_model.created_at,
-        )
+            webhook_dto = WebhookDTO(
+                webhook_key=webhook_model.webhook_key,
+                creation_date=webhook_model.created_at,
+            )
 
+        except Exception as ex:
+            raise ex from None
         # print(f'The webhook dto created is {webhook_dto.__dict__}')
 
         return webhook_dto

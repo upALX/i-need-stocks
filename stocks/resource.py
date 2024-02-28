@@ -1,7 +1,6 @@
 from django.http import JsonResponse, HttpRequest, HttpResponse
 from django.views import View
-from django.utils.decorators import method_decorator
-from django.views.decorators.http import require_http_methods
+from rest_framework.exceptions import ValidationError
 from .controller import StockController
 
 
@@ -29,9 +28,11 @@ class StockResource(View):
                 stock_code = request.GET.get('stock_code')
 
                 if not stock_code:
-                    return JsonResponse({'error': 'stock_code query parameter is required'}, status=400)
+                    raise ValidationError({'error': 'stock_code query parameter is required'})
                 if len(stock_code) > 7:
-                    return JsonResponse({'error': 'Stock code must be at most 7 characters long.'}, status=400)
+                    raise ValidationError({'error': 'Stock code must be at most 7 characters long.'})
+                if not stock_code.isalnum():
+                    raise ValidationError({'error': 'stock_code query parameter is required'})
 
                 print(f'The stock code is {stock_code}')
 
