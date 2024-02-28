@@ -77,9 +77,9 @@ class WebhookController:
                 print('IS ON RAISE ERROR')
                 raise HTTPError("On try sent the webhook occurs an error")
         except HTTPError as ex:
-            return HttpResponseBadRequest("Bad request: " + str(ex))
+            raise ex from None 
         except Exception as ex:
-            return Exception(str(ex))
+            raise ex from None
         
         return
     

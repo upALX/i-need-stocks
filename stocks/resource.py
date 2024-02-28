@@ -5,7 +5,6 @@ from django.views.decorators.http import require_http_methods
 from .controller import StockController
 
 
-@method_decorator(require_http_methods(["GET"]), name='dispatch')
 class StockResource(View):
     '''
         All requests and responses of API
@@ -18,7 +17,7 @@ class StockResource(View):
     def get_health_check_resource(self, request: HttpRequest):
         
 
-        return HttpResponse()
+        return HttpResponse(status=204)
 
     def get_stocks(self, request: HttpRequest) -> None:
         '''
@@ -26,17 +25,20 @@ class StockResource(View):
         '''
 
         if request.method == 'GET':
-            stock_code = request.GET.get('stock_code')
+            try:
+                stock_code = request.GET.get('stock_code')
 
-            if not stock_code:
-                return JsonResponse({'error': 'stock_code query parameter is required'}, status=400)
-            if len(stock_code) > 7:
-                return JsonResponse({'error': 'Stock code must be at most 7 characters long.'}, status=400)
+                if not stock_code:
+                    return JsonResponse({'error': 'stock_code query parameter is required'}, status=400)
+                if len(stock_code) > 7:
+                    return JsonResponse({'error': 'Stock code must be at most 7 characters long.'}, status=400)
 
-            print(f'The stock code is {stock_code}')
+                print(f'The stock code is {stock_code}')
 
-            stock_dto = self.stock_controller.get_stock_information(stock_code=stock_code.upper()) 
+                stock_dto = self.stock_controller.get_stock_information(stock_code=stock_code.upper())
 
-            return JsonResponse(stock_dto.__dict__)
+                return JsonResponse(stock_dto.__dict__)
+            except Exception as ex:
+                return JsonResponse({'error_message': str(ex)}, status=400)
         else:
             return JsonResponse({'error': 'This endpoint only accepts GET requests'}, status=405)
