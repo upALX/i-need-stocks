@@ -4,6 +4,7 @@ from django.views import View
 import json
 from .controller import WebhookController
 
+
 class WebhookResource(View):
     '''
         receive all requests from webhooks

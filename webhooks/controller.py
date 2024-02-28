@@ -1,6 +1,6 @@
 import requests
-from django.http import HttpResponseBadRequest
 from requests.exceptions import HTTPError
+from django.core.exceptions import BadRequest
 from constants import HEADERS, TIMEOUT
 from .dto.webhook_dto import WebhookDTO
 from .models import Webhook
@@ -21,6 +21,16 @@ class WebhookController:
     ) -> WebhookDTO:
         
         try:
+
+            webhook_already_exists = self.get_webhook_by_all(
+                stock_code=stock_code,
+                webhook_url=webhook_url
+            )
+
+            print(f'The webhook model already exists: {webhook_already_exists}')
+
+            if webhook_already_exists is not None:
+                raise BadRequest(f'Already exists an webhook register with the stock {stock_code} and url {webhook_url}')
         
             webhook_model = self.webhook_repository.create_webhook_model(
                 webhook_url=webhook_url,
@@ -37,7 +47,23 @@ class WebhookController:
         # print(f'The webhook dto created is {webhook_dto.__dict__}')
 
         return webhook_dto
+    
+    def get_webhook_by_all(
+        self,
+        stock_code: str,
+        webhook_url: str
+    ) -> Webhook:
+        print('Trying get the webhook')
 
+        webhook_model = self.webhook_repository.get_webhook_by_all(
+            stock_code=stock_code,
+            webhook_url=webhook_url
+        )
+
+        print(f'The webhook getted on Webhook module is {webhook_model}')
+
+        return webhook_model
+    
     def get_webhook_by_stock_code(
         self,
         stock_code: str
@@ -75,13 +101,12 @@ class WebhookController:
                 timeout=TIMEOUT
             )
 
-            print(f'The response of sent webhook has the status {response.json()}')
+            print(f'The response of sent webhook has the status {response.content}')
 
             if response.status_code > 300:
-                print('IS ON RAISE ERROR')
                 raise HTTPError("On try sent the webhook occurs an error")
         except HTTPError as ex:
-            raise ex from None 
+            raise ex from None
         except Exception as ex:
             raise ex from None
         

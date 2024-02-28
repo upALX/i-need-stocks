@@ -1,7 +1,7 @@
 import requests
 from requests.exceptions import HTTPError, RequestException
 from webhooks.controller import WebhookController
-from constants import MAX_RETRY, API_KEY_V1, HEADERS, TIMEOUT
+from constants import MAX_RETRY, API_KEY_V2, HEADERS, TIMEOUT
 from .dto.stock_dto import StockDTO
 from .repository import StockRepository
 
@@ -57,7 +57,7 @@ class StockController:
         stock_code: str,
     ) -> dict:
         counter = 0
-        base_url = f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={stock_code}&interval=5min&apikey={API_KEY_V1}'
+        base_url = f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={stock_code}&interval=5min&apikey={API_KEY_V2}'
 
         try:
             while True:

@@ -37,3 +37,24 @@ class WebhookRepository:
             webhook_model = None
         
         return webhook_model
+
+    def get_webhook_by_all(
+        self,
+        stock_code: str,
+        webhook_url: str
+    ) -> Webhook:
+        try:
+
+            print(f'Trying get the webhook with the code {stock_code} and url {webhook_url} on repository')
+            
+            webhook_model = Webhook.objects.get(
+                stock_ticker_code=stock_code,
+                webhook_url=webhook_url
+            )
+
+            print(f'On webhook repository the webhook model found with the stock code {stock_code} is {webhook_model}')
+
+        except ObjectDoesNotExist:
+            webhook_model = None
+        
+        return webhook_model
