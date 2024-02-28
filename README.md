@@ -4,10 +4,9 @@
 
 This a web app to find the price of any stocks.
 
+![giphy](https://github.com/upALX/All-Assets/blob/main/on-mvp.webp)
 
-🛠️*This project is under development*🛠️
-
-![giphy](https://github.com/upALX/All-Assets/blob/main/construction-little-girl.webp)
+🚀🎇**This project is on MVP**🎇🚀
 
 ---
 
