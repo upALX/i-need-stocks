@@ -1,6 +1,7 @@
 import requests
 from django.http import HttpResponseBadRequest
 from requests.exceptions import HTTPError
+from constants import HEADERS, TIMEOUT
 from .dto.webhook_dto import WebhookDTO
 from .models import Webhook
 from .repository import WebhookRepository
@@ -14,7 +15,7 @@ class WebhookController:
         self.webhook_repository = WebhookRepository()
 
     def create_webhook(
-        self, 
+        self,
         request_body: dict
     ) -> WebhookDTO:
         
@@ -69,8 +70,9 @@ class WebhookController:
 
             response = requests.post(
                 url=webhook_url,
+                headers=HEADERS,
                 json=json_data,
-                timeout=7
+                timeout=TIMEOUT
             )
 
             print(f'The response of sent webhook has the status {response.json()}')

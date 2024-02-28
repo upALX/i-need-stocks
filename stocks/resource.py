@@ -2,7 +2,6 @@ from django.http import JsonResponse, HttpRequest, HttpResponse
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_http_methods
-import requests
 from .controller import StockController
 
 

@@ -9,7 +9,7 @@ class StockRepository:
         stock_model = Stock.objects.get(stock_key=stock_key)
         return stock_model
 
-    def save_stock_information(self, stock_code: str, stock_data: dict or any):
+    def save_stock_information(self, stock_code: str, stock_data: dict):
 
         print(f'Is on save stock information with stock data {stock_data}')
 

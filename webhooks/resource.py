@@ -26,7 +26,7 @@ class WebhookResource(View):
         '''
         body_from_request = json.loads(request.body)
 
-        print(f'The request body informated is {body_from_request}')
+        print(f'The request body informed is {body_from_request}')
 
         webhook_dto = self.webhook_controller.create_webhook(
             request_body=body_from_request

@@ -15,11 +15,11 @@ class WebhookRepository:
         print(f'Model of webhook created is {new_webhook_model.webhook_key}')
 
         new_webhook_model.save()
-        
+
         print('Webhook model was saved')
 
         return new_webhook_model
-   
+
     def get_webhook_by_stock_code(
         self,
         stock_code: str
@@ -29,7 +29,6 @@ class WebhookRepository:
             stock_ticker_code=stock_code
         )
 
-        print(f'On webhook repository the webhook model funded with the stock code {stock_code} is {webhook_model}')
+        print(f'On webhook repository the webhook model found with the stock code {stock_code} is {webhook_model}')
 
         return webhook_model
-    
