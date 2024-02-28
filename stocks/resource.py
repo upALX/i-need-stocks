@@ -24,10 +24,19 @@ class StockResource(View):
         '''
             receive and response all requests of stocks
         '''
-        stock_code = request.GET.get('stock_code')
 
-        print(f'The stock code is {stock_code}')
+        if request.method == 'GET':
+            stock_code = request.GET.get('stock_code')
 
-        stock_dto = self.stock_controller.get_stock_information(stock_code=stock_code.upper()) 
+            if not stock_code:
+                return JsonResponse({'error': 'stock_code query parameter is required'}, status=400)
+            if len(stock_code) > 7:
+                return JsonResponse({'error': 'Stock code must be at most 7 characters long.'}, status=400)
 
-        return JsonResponse(stock_dto.__dict__)
+            print(f'The stock code is {stock_code}')
+
+            stock_dto = self.stock_controller.get_stock_information(stock_code=stock_code.upper()) 
+
+            return JsonResponse(stock_dto.__dict__)
+        else:
+            return JsonResponse({'error': 'This endpoint only accepts GET requests'}, status=405)

@@ -66,12 +66,12 @@ class StockController:
                     timeout=TIMEOUT,
                 )
 
-                print(f'THE STATUS CODE IS {http_response.status_code}')
+                print(f'THE STATUS CODE IS {http_response.status_code} and message is {http_response.json}')
 
-                if http_response.status_code > 300 and counter == MAX_RETRY:
+                if counter == MAX_RETRY:
                     raise HTTPError("Max retry to get all information stock was exceeded.")
 
-                if http_response.status_code < 300:
+                if http_response.status_code == 200:
                     stock_data: dict = http_response.json()
                     return stock_data
 

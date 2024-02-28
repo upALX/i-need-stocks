@@ -26,10 +26,18 @@ class WebhookResource(View):
         '''
         body_from_request = json.loads(request.body)
 
-        print(f'The request body informed is {body_from_request}')
+        stock_code = body_from_request.get('stock_code')
+        webhook_url = body_from_request.get('webhook_url')
 
-        webhook_dto = self.webhook_controller.create_webhook(
-            request_body=body_from_request
-        )
+        if stock_code is not None and webhook_url is not None:
 
-        return JsonResponse(webhook_dto.__dict__)
+            print(f'The request body informed is {body_from_request}')
+
+            webhook_dto = self.webhook_controller.create_webhook(
+                stock_code=stock_code,
+                webhook_url=webhook_url
+            )
+
+            return JsonResponse(webhook_dto.__dict__)
+        else:
+            return JsonResponse({'error': 'Invalid JSON format. Stock_code and webhook_url are required.'}, status=400)
