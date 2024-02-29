@@ -44,7 +44,14 @@ source .venv/bin/activate
 pip install -r requirements.txt 
 ```
 
-**5 - Run the app:**
+**5 - Run the migrations to create the database and tables**
+```
+python3 manage.py migrate
+```
+
+**6 - Run the app:**
+
+*Before run the app, if you are using VSCODE, make sure your python interpreter running is the: 3.12.1 venv*
 
 ```
 python3 manage.py runserver
